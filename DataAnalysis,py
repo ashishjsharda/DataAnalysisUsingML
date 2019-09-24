@@ -1,0 +1,36 @@
+'''
+Created on Sep 24, 2019
+Analysis and Prediction -Indian Liver Patients
+@author: asharda
+'''
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import LabelEncoder
+liver_df = pd.read_csv(r'data/indian_liver_patient.csv')
+print(liver_df.head(5))
+print(liver_df.info())
+print(liver_df.describe(include="all"))
+#Print which features are available
+print(liver_df.columns)
+sns.countplot(data=liver_df, x = 'Dataset', label='Count')
+plt.show()
+LD,NLD=liver_df['Dataset'].value_counts()
+print('Number of patients diagnosed with liver disease: ',LD)
+print('Number of patients not diagnosed with liver disease: ',NLD)
+sns.countplot(data=liver_df, x = 'Gender', label='Count')
+M,F=liver_df['Gender'].value_counts()
+print('Number of male  patients : ',M)
+print('Number of female patients : ',F)
+plt.show()
+sns.factorplot(x="Age",y="Gender",hue="Dataset",data=liver_df)
+plt.show()
+print(liver_df[['Gender', 'Dataset','Age']].groupby(['Dataset','Gender'], as_index=False).count().sort_values(by='Dataset', ascending=False))
+g = sns.FacetGrid(liver_df, col="Dataset", row="Gender", margin_titles=True)
+g.map(plt.hist, "Age", color="red")
+plt.subplots_adjust(top=0.9)
+g.fig.suptitle('Disease by Gender and Age');
+plt.show()
+
+
